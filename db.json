@@ -1,0 +1,25 @@
+"users" {
+    "name": "",
+    "password" : ""
+},
+
+"technicians" {
+    "name" : "",
+    "position": "",
+    "shift": "",
+},
+
+"tasks" {
+    "type": "",
+    "state": "",
+    "description": "",
+    "date_generation": "",
+    "date_closing": "",
+    
+    "start_time": "",
+    "end_time": "",
+    "turn": "",
+
+    "technicians": "",
+    "position": ""    
+}
