@@ -7,7 +7,7 @@ const technicianRoute = require('./technician');
 const router = express();
 
 router.use('/task', taskRoute);
-router.use('/auth', userRoute);
+router.use('/user', userRoute);
 router.use('/tech', technicianRoute);
 
 module.exports = router;

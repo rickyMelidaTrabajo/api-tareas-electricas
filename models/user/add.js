@@ -1,6 +1,6 @@
-const User = require('./user');
-const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const User = require('./user');
 
 User.pre('save', function(next) {
     if(this.isNew || this.isModified('password')) {
@@ -18,4 +18,4 @@ User.pre('save', function(next) {
     }
 });
 
-module.exports = mongoose.model('AddUser', User);
+module.exports = mongoose.model('User', User);
