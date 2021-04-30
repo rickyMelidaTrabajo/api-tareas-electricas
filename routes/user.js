@@ -1,9 +1,11 @@
 const express = require('express');
 const auth = require('../controllers/user/auth');
 const add = require('../controllers/user/add');
+const verifySession = require('../controllers/user/sessionVerify');
 
 const router = express.Router();
 
+router.get('/', verifySession)
 router.post('/auth', auth);
 router.post('/add', add);
 

@@ -1,24 +1,24 @@
-const session = require('express-session');
 const User = require('../../models/user/auth');
+
 
 const Actions= {
     sessionExist: (req)=> {
         try {
-            let dataSession = req.session.user;
-
+            let dataSession = req.session;
+            console.log(req.session);
             return {
                 status: 200,
-                message: `Bienvenido ${dataSession}` 
+                message: `Bienvenido ${dataSession.username}` 
             }
         } catch (error) {
             return {
                 status: 500,
-                message: 'No se hay una session abierta'
+                message: 'No hay una session abierta'
             }
         }
     },
 
-    auth: (username, password, res)=> {
+    auth: (username, password, req, res)=> {
         User.findOne({username}, (err, user)=> {
             if(err){
                 res.status(500).send({
@@ -33,6 +33,8 @@ const Actions= {
                             message: 'Error al autenticar'
                         });
                     }else if(result){
+                        // req.session.username = user.username;
+                        // console.log(req.session);
                         res.status(200).send({
                             status: 200,
                             message: 'Usuario autenticado correctamente!',

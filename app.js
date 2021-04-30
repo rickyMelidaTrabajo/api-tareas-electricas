@@ -1,10 +1,19 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const session = require('express-session');
+
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(session({
+    key: 'user',
+    secret: 'sacdvfnnfvf1',
+    resave: true,
+    saveUninitialized: true
+}));
+
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -14,8 +23,8 @@ app.use((req, res, next) => {
     next();
 });
 
-const task = require('./routes/routes');
+const electricTask = require('./routes/routes');
 
-app.use('/api', task);
+app.use('/api', electricTask);
 
 module.exports = app;
