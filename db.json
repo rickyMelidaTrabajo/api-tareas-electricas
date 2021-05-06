@@ -9,7 +9,7 @@
     "shift": "",
 },
 
-"tasks" {
+"tasksFinished" {
     "type": "",
     "state": "",
     "description": "",
@@ -18,6 +18,21 @@
     
     "start_time": "",
     "end_time": "",
+    "turn": "",
+
+    // "image_before": "",
+    // "image_after": "",
+
+    "technicians": "",
+    "position": ""    
+},
+
+"tasksPending" {
+    "type": "",
+    "state": "",
+    "description": "",
+    "date_generation": "",
+    
     "turn": "",
 
     "technicians": "",

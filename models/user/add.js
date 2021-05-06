@@ -1,19 +1,19 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const User = require('./user');
+const User = require('./userSchema');
 
-User.pre('save', function(next) {
-    if(this.isNew || this.isModified('password')) {
+User.pre('save', function (next) {
+    if (this.isNew || this.isModified('password')) {
         const document = this;
-        bcrypt.hash(document.password, 10, (err, hashedPassword)=>{
-            if(err) {
+        bcrypt.hash(document.password, 10, (err, hashedPassword) => {
+            if (err) {
                 next(err)
-            }else {
+            } else {
                 document.password = hashedPassword;
                 next();
             }
         });
-    }else {
+    } else {
         next();
     }
 });

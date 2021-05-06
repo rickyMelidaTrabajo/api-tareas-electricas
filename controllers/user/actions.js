@@ -5,10 +5,16 @@ const Actions= {
     sessionExist: (req)=> {
         try {
             let dataSession = req.session;
-            console.log(req.session);
-            return {
-                status: 200,
-                message: `Bienvenido ${dataSession.username}` 
+            if(dataSession === undefined) {
+                return {
+                    status: 200,
+                    message: `Bienvenido ${dataSession.username}` 
+                }
+            }else {
+                return {
+                    status: 500,
+                    message: 'No hay una session abierta'
+                }    
             }
         } catch (error) {
             return {
@@ -33,8 +39,7 @@ const Actions= {
                             message: 'Error al autenticar'
                         });
                     }else if(result){
-                        // req.session.username = user.username;
-                        // console.log(req.session);
+                        req.session.username = user.username;
                         res.status(200).send({
                             status: 200,
                             message: 'Usuario autenticado correctamente!',
