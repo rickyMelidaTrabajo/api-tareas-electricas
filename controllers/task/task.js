@@ -1,9 +1,18 @@
 const validator = require('validator');
 const fs = require('fs');
 const path = require('path');
+const moment = require('moment');
 
 let task = {
     test: (req, res) => {
+        const hour1 = '23:30';
+        const hour2 = '22:30';
+        const hour_moment1 = moment(hour1, 'HH:mm:ss');
+        const hour_moment2 = moment(hour2, 'HH:mm:ss');
+        
+        //Difference among hour1 and hour2
+        console.log(hour_moment1.diff(hour_moment2) / 3600000);
+        
         return res.status(200).send({
             message: 'soy la accion test de mi controlador de la tarea'
         });
