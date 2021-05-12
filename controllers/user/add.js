@@ -1,9 +1,9 @@
 const User = require('../../models/user/add');
 
 const add = (req, res) => {
-    const { username, password } = req.body;
-    let newUser = User({ username, password});
+    const { username, password, rol } = req.body;
 
+    let newUser = User({ username, password, rol});
     newUser.save(err=> {
         if(err) {
             res.status(500).send({

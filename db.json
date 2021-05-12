@@ -6,7 +6,8 @@
 "technicians" {
     "name" : "",
     "position": "",
-    "shift": "",
+    "turn": "",
+    "username": ""
 },
 
 "tasksFinished" {

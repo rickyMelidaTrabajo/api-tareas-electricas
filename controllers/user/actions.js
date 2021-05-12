@@ -1,4 +1,5 @@
 const User = require('../../models/user/auth');
+const Username = require('../../models/user/userSchema');
 
 
 const Actions= {
@@ -40,6 +41,7 @@ const Actions= {
                         });
                     }else if(result){
                         req.session.username = user.username;
+                        console.log(req.session.username);
                         res.status(200).send({
                             status: 200,
                             message: 'Usuario autenticado correctamente!',
@@ -53,6 +55,11 @@ const Actions= {
                 })
             }
         });
+    },
+
+    get: (req, res)=> {
+        return req.session.username;
+
     }
 }
 

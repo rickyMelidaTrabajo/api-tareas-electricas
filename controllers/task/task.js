@@ -2,19 +2,22 @@ const validator = require('validator');
 const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
+const username = require('../user/actions');
 
 let task = {
     test: (req, res) => {
-        const hour1 = '23:30';
-        const hour2 = '22:30';
+        const hour1 = '22:30';
+        const hour2 = '23:30';
         const hour_moment1 = moment(hour1, 'HH:mm:ss');
         const hour_moment2 = moment(hour2, 'HH:mm:ss');
         
-        //Difference among hour1 and hour2
-        console.log(hour_moment1.diff(hour_moment2) / 3600000);
+        //Difference among hour1 and hour2, this give the result in seconds
+        // for that divided the result among 3600000
+        console.log(hour_moment2.diff(hour_moment1) / 3600000);
         
         return res.status(200).send({
-            message: 'soy la accion test de mi controlador de la tarea'
+            message: 'soy la accion test de mi controlador de la tarea',
+            name: `El nombre del usuario es ${req.session.username}`
         });
     },
 
@@ -28,12 +31,8 @@ let task = {
             technicians,
             position
         } = req.body;
+        const now = moment().format('YYYY-MM-DD');
 
-        if(validator.isDate('2020-05-06')) {
-            console.log('Si es una hora');
-        }else {
-            console.log('Hora no valida');
-        }
 
         res.status(200).send({
             type,
@@ -42,7 +41,8 @@ let task = {
             date_generation,
             turn,
             technicians,
-            position
+            position,
+            name: `El nombre del usuario es ${req.session.username}`
         })
     },
 
