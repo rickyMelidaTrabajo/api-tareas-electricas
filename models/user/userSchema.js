@@ -1,10 +1,17 @@
-const mongoose = require('mongoose');
+const UserSchema = {
+    username: { 
+        type: String, 
+        required: true, 
+        unique: true 
+    },
+    password: { 
+        type: String, 
+        required: true 
+    },
+    rol: { 
+        type: String, 
+        require: true 
+    }
+};
 
-let userSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    rol: { type: String, require: true }
-    
-});
-
-module.exports = userSchema;
+module.exports = UserSchema;

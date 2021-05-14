@@ -41,7 +41,6 @@ const Actions= {
                         });
                     }else if(result){
                         req.session.username = user.username;
-                        console.log(req.session.username);
                         res.status(200).send({
                             status: 200,
                             message: 'Usuario autenticado correctamente!',
