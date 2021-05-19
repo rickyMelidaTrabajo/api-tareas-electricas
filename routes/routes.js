@@ -8,7 +8,7 @@ const router = express();
 
 router.use('/task', taskRoute);
 router.use('/user', userRoute);
-router.use('/tech', technicianRoute);
+router.use('/technician', technicianRoute);
 
 module.exports = router;
 
