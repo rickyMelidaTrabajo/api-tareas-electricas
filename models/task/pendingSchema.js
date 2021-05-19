@@ -6,7 +6,7 @@ const pendingTaskSchema = new mongoose.Schema({
     description: { type: String, require: true },
     date_generation: { type: Date, require: true },
     turn: { type: String, require: true },
-    technicians: { type: String, require: true },
+    technician: { type: String, require: true },
     position: { type: String, require: true }
 });
 
