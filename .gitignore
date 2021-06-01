@@ -1,3 +1,4 @@
 node_modules
 .env
 codes-examples/form-test.html
+.vscode
