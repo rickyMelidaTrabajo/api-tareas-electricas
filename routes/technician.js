@@ -4,6 +4,6 @@ const technicianController = require('../controllers/technician/technician');
 const router = express.Router();
 
 router.post('/test', technicianController.test);
-router.get('/get', technicianController.get);
+router.get('/get-one', technicianController.getOne);
 
 module.exports = router;

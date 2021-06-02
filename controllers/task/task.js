@@ -43,7 +43,7 @@ let task = {
             turn
         } = req.body;
 
-        technician.get(username).then(tech => {
+        technician.getWhithUsername(username).then(tech => {
             let newPendingTask = new PendingTask({
                 type,
                 state,
@@ -53,15 +53,15 @@ let task = {
                 technician: tech.name,
                 position: tech.position
             });
-            
-            newPendingTask.save((err, doc)=>{
-                if(err){
+
+            newPendingTask.save((err, doc) => {
+                if (err) {
                     res.status(500).send({
                         status: 'error',
                         message: 'Error al guardar tarea pendiente',
                         err
                     })
-                }else {
+                } else {
                     res.status(200).send({
                         status: 'success',
                         message: 'Se guardo correctamente la tarea',
@@ -69,7 +69,7 @@ let task = {
                     });
                 }
             })
-            
+
         }).catch(err => {
             res.status(500).send({
                 status: 'error',
