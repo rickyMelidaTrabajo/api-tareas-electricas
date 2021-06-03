@@ -1,10 +1,10 @@
-const validator = require('validator');
-const fs = require('fs');
-const path = require('path');
 const moment = require('moment');
-const username = require('../user/actions');
 const technician = require('../technician/technician');
 const PendingTask = require('../../models/task/pendingSchema');
+const FinishedTask = require('../../models/task/finishedSchema');
+const images = require('../foldersAndImages/images');
+const folderImages = require('../foldersAndImages/folder');
+const folder = require('../foldersAndImages/folder');
 
 let task = {
     test: (req, res) => {
@@ -80,29 +80,54 @@ let task = {
     },
 
     addFinishedTask: (req, res) => {
-        const {
-            type,
-            state,
-            description,
-            date_generation,
-            date_closing,
-            start_time,
-            end_time,
-            hour_man,
-            turn,
-            technicians,
-            position
-        } = req.body;
-
+        const state = "Finalizado";
+        const date_closing = moment().format('YYYY-MM-DD');
+        const date_generation = moment().format('YYYY-MM-DD');
+        const { type, description, start_time, end_time, hour_man, } = req.body;
         const { image_before, image_after } = req.files;
 
-        console.log(req.files);
+        technician.getWhithUsername(req.session.username).then(tech => {
+            let { name, position, turn } = tech;
 
-        return res.status(200).send({
-            message: 'Success',
-            image_before,
-            image_after
-        });
+            let newFinishedTask = new FinishedTask({
+                type,
+                state,
+                description,
+                date_generation,
+                date_closing,
+                start_time,
+                end_time,
+                hour_man,
+                turn,
+                name,
+                position
+            });
+
+            newFinishedTask.save((err, data) => {
+                if (err) {
+                    return res.status(500).send({
+                        message: 'Error al guardar datos en BD',
+                        err
+                    });
+                }
+                const routeImage = `${req.session.username}/${data._id}`;
+                folderImages.verifyFolderUser(req.session.username);
+                folderImages.VerifyFolderTask(req.session.username, data._id);
+
+                images.moveImageBefore(image_before.path.split('\\')[1], routeImage);
+                images.moveImageAfter(image_after.path.split('\\')[1], routeImage);
+
+                return res.status(202).send({
+                    message: 'Tarea Guardada',
+                    data: image_before.path.split('\\')[1]
+                });
+            });
+        }).catch(err => {
+            return res.status(200).send({
+                message: 'Error al obtener tecnicos',
+
+            });
+        })
     },
 
     showTasks: (req, res) => {

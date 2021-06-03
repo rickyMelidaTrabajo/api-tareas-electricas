@@ -10,7 +10,7 @@ const finishedTaskSchema = new mongoose.Schema({
     end_time: { type: String, require: true },
     hour_man: { type: String, require: true },
     turn: { type: String, require: true },
-    technicians: { type: String, require: true },
+    name: { type: String, require: true },
     position: { type: String, require: true },
 });
 
