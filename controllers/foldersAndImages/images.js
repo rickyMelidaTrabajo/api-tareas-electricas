@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const Task = require('../task/task');
 const routeAsolute = path.join(__dirname, '../../../');
 
 const images = {
