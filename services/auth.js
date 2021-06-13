@@ -7,10 +7,9 @@ let createToken = (user) => {
     const payload = {
         username: user.username,
         iat: moment().unix(),
-        exp: moment().add(5, 'minutes').unix()
     }
 
-    return jwt.sign(payload, process.env.SECRET_TOKEN);
+    return jwt.sign(payload, process.env.SECRET_TOKEN, { expiresIn: '30m' });
 };
 
 let decodeToken = (token) => {
@@ -19,19 +18,13 @@ let decodeToken = (token) => {
             const payload = jwt.verify(token, process.env.SECRET_TOKEN);
 
             if (payload.exp <= moment().unix()) {
-                reject({
-                    status: 401,
-                    message: 'El token ha expirado'
-                });
+                reject({ status: 401, message: 'El token ha expirado' });
             }
 
             resolve(payload.username);
 
-        } catch (error) {
-            reject({
-                status: 500,
-                message: 'Token invalido'
-            });
+        } catch (err) {
+            reject({ status: 500, message: 'Token invalido' });
         }
     });
 
