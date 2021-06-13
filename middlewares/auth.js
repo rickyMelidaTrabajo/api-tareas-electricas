@@ -9,10 +9,10 @@ let isAuth = (req, res, next) => {
     service.decodeToken(token)
         .then(result => {
             req.user = result;
-            next()
+            next();
         })
         .catch(result => {
-            res.status(result.status);
+            res.status(result.status).send({ message: result.message });
         });
 }
 
