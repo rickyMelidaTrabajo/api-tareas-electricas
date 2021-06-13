@@ -1,5 +1,4 @@
-const username = require('../user/actions');
-const Technician = require('../../models/technician/technician');
+const Technician = require('../models/technician/technician');
 
 const technician = {
     test: (req, res) => {
