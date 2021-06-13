@@ -159,6 +159,19 @@ let task = {
     },
 
     showTaskBy: (req, res) => {
+        const searchBy = req.query.type;
+        const searchData = req.query.data;
+
+        PendingTask.find({ type: 'TIC', })
+            .then(res => {
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+        res.send('buscar por')
+
 
     }
 
