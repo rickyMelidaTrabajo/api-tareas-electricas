@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const pendingTaskSchema = new mongoose.Schema({
+    taskNumber: { type: Number, require: true },
     type: { type: String, require: true },
     state: { type: String, require: true },
     description: { type: String, require: true },
