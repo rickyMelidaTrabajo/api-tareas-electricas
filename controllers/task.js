@@ -5,7 +5,6 @@ const FinishedTask = require('../models/task/finishedSchema');
 const images = require('./foldersAndImages/images');
 const folderImages = require('./foldersAndImages/folder');
 const folder = require('./foldersAndImages/folder');
-const service = require('../services/auth');
 
 
 let task = {
@@ -36,8 +35,7 @@ let task = {
     },
 
     addPendingTask: (req, res) => {
-        const username = req.session.username;
-        const user = req.user;
+        const username = req.user;
         const date_generation = moment().format('YYYY-MM-DD');
         const {
             type,
@@ -46,10 +44,6 @@ let task = {
             turn
         } = req.body;
 
-
-//        console.log(decoded.payload)
-
-        /*
         technician.getWhithUsername(username).then(tech => {
             let newPendingTask = new PendingTask({
                 type,
@@ -83,17 +77,18 @@ let task = {
                 message: 'Error al obtener tecnico',
                 err
             })
-        });*/
+        });
     },
 
     addFinishedTask: (req, res) => {
+        const username = req.user;
         const state = "Finalizado";
         const date_closing = moment().format('YYYY-MM-DD');
         const date_generation = moment().format('YYYY-MM-DD');
         const { type, description, start_time, end_time, hour_man, } = req.body;
         const { image_before, image_after } = req.files;
 
-        technician.getWhithUsername(req.session.username).then(tech => {
+        technician.getWhithUsername(username).then(tech => {
             let { name, position, turn } = tech;
 
             let newFinishedTask = new FinishedTask({
