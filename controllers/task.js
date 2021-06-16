@@ -93,6 +93,8 @@ let task = {
         const { type, description, start_time, end_time, hour_man, } = req.body;
         const { image_before, image_after } = req.files;
 
+        console.log(req.body.data);
+
         technician.getWhithUsername(req.session.username).then(tech => {
             let { name, position, turn } = tech;
 
