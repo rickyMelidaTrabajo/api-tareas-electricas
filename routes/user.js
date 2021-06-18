@@ -1,12 +1,8 @@
 const express = require('express');
-const auth = require('../controllers/user/auth');
-const add = require('../controllers/user/add');
-const verifySession = require('../controllers/user/sessionVerify');
-
+const auth = require('../controllers/user');
 const router = express.Router();
 
-router.get('/verify-session', verifySession);
-router.post('/auth', auth);
-router.post('/add', add);
+router.post('/signin', auth.signIn);
+router.post('/signup', auth.signUp);
 
 module.exports = router;
