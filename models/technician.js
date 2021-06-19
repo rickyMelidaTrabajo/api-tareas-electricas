@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
 let technicianSchema = schema({
+    username: String,
     name: String,
     position: String,
     turn: String

@@ -1,37 +1,10 @@
 const moment = require('moment');
 const technician = require('./technician');
-const PendingTask = require('../models/task/pendingSchema');
-const FinishedTask = require('../models/task/finishedSchema');
+const Task = require('../models/task');
 const images = require('./foldersAndImages/images');
 const folderImages = require('./foldersAndImages/folder');
 
 let task = {
-    test: (req, res) => {
-        const hour1 = '22:30';
-        const hour2 = '23:30';
-        const hour_moment1 = moment(hour1, 'HH:mm:ss');
-        const hour_moment2 = moment(hour2, 'HH:mm:ss');
-        //Difference among hour1 and hour2, this give the result in seconds
-        // for that divided the result among 3600000
-        // console.log(hour_moment2.diff(hour_moment1) / 3600000);
-
-        technician.get(req.session.username).then(result => {
-            return res.status(200).send({
-                message: 'soy la accion test de mi controlador de la tarea',
-                name: `El nombre del usuario es ${req.session.username}`,
-                result: result
-            });
-
-        }).catch(err => {
-            return res.status(500).send({
-                message: 'soy la accion test de mi controlador de la tarea',
-                name: `El nombre del usuario es ${req.session.username}`,
-                result: err
-            });
-        })
-
-    },
-
     addPendingTask: (req, res) => {
         const username = req.user;
         const date_generation = moment().format('YYYY-MM-DD');
@@ -43,11 +16,11 @@ let task = {
             turn
         } = req.body;
 
-        PendingTask.countDocuments().then(count => {
+        Task.countDocuments().then(count => {
             taskNumber = count + 1;
 
             technician.getWhithUsername(username).then(tech => {
-                let newPendingTask = new PendingTask({
+                let newPendingTask = new Task({
                     taskNumber,
                     type,
                     state,
@@ -59,13 +32,14 @@ let task = {
                 });
 
                 newPendingTask.save((err, doc) => {
-                    if (err) return res.status(500).send({ message: 'Error al guardar tarea pendiente', })
+                    if (err) return res.status(500).send({ message: 'Error al guardar tarea pendiente' })
 
-                    return res.status(200).send({ message: 'Se guardo correctamente la tarea', });
+                    return res.status(200).send({ message: `Se guardo correctamente la tarea # ${taskNumber}` });
                 });
 
+
             }).catch(err => {
-                res.status(500).send({ message: 'Error al obtener tecnico' })
+                res.status(500).send({ message: `Error al obtener tecnico, ${err}` })
             });
 
         }).catch(err => {
@@ -87,7 +61,7 @@ let task = {
 
         let taskNumber;
 
-        FinishedTask.countDocuments().then(count => {
+        Task.countDocuments().then(count => {
             taskNumber = count + 1;
 
             const mainRoute = 'task-images/';
@@ -96,8 +70,11 @@ let task = {
 
             const routeImage = `${username}/${taskNumber}`;
 
-            images.moveImageBefore(image_before.path.split('\\')[1], routeImage);
-            images.moveImageAfter(image_after.path.split('\\')[1], routeImage);
+            //images.moveImageBefore(image_before.path.split('\\')[1], routeImage); //Para window
+            images.moveImageBefore(image_before.path.split('/')[1], routeImage); //Para linux
+            //images.moveImageAfter(image_after.path.split('\\')[1], routeImage); //para window
+            images.moveImageAfter(image_after.path.split('/')[1], routeImage); //para linux
+
 
             const imageBefore = `${mainRoute}${routeImage}/before.${extensionImageBefore}`;
             const imageAfter = `${mainRoute}${routeImage}/after.${extensionImageAfter}`;
@@ -105,7 +82,7 @@ let task = {
             technician.getWhithUsername(username).then(tech => {
                 let { name, position, turn } = tech;
 
-                let newFinishedTask = new FinishedTask({
+                let newFinishedTask = new Task({
                     taskNumber,
                     type,
                     state,
@@ -132,15 +109,13 @@ let task = {
                 return res.status(500).send({ message: 'Error al obtener tecnicos' });
             })
         }).catch(err => {
-            if (err) return res.status(500).send({ message: 'Error al obtener la cantidad de tareas finalizadas.' });
+            if (err) return res.status(500).send({ message: `Error al obtener la cantidad de tareas finalizadas ${err}` });
         })
-
-
 
     },
 
     showPendingTasks: (req, res) => {
-        PendingTask.find({}, (err, tasks) => {
+        Task.find({ state: 'Pendiente' }, (err, tasks) => {
             if (err) return res.status(500).send({ message: 'Error a ver tareas pendientes' });
             if (!tasks) return res.status(204).send({ message: 'No hay tareas pendientes' })
 
@@ -149,7 +124,7 @@ let task = {
     },
 
     showFinishedTasks: (req, res) => {
-        FinishedTask.find({}, (err, tasks) => {
+        Task.find({ state: 'Finalizado' }, (err, tasks) => {
             if (err) return res.status(500).send({ message: 'Error a ver tareas finalizadas.' })
             if (!tasks) return res.status(204).send({ message: 'No hay tareas finalizadas' })
 
@@ -162,7 +137,7 @@ let task = {
         const searchBy = req.query.type;
         const searchData = req.query.data;
 
-        PendingTask.find({ type: 'TIC', })
+        Task.find({ type: 'TIC', })
             .then(res => {
                 console.log(res)
             })
@@ -171,8 +146,6 @@ let task = {
             })
 
         res.send('buscar por')
-
-
     }
 
 }

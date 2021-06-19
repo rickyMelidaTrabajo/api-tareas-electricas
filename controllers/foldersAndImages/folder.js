@@ -1,26 +1,22 @@
 const path = require('path');
 const fs = require('fs');
-const route = path.join(__dirname, '../../../task-images/');
+const mainRoute = path.join(__dirname, '../../../task-images/');
 
 const folder = {
 
-    verifyMainFolder: () => {
-        if (!fs.existsSync(route)) {
-            fs.mkdirSync(route);
-        }
-    },
-
     verifyFolderUser: (username) => {
-        this.verifyMainFolder;
-        if (!fs.existsSync(`${route}/${username}`)) {
-            fs.mkdirSync(`${route}/${username}/`);
+        if (!fs.existsSync(`${mainRoute}${username}`)) {
+            fs.mkdirSync(`${mainRoute}${username}/`, { recursive: true }, (err) => {
+                if (err) console.log(`No se pudo crear la carpeta ${err}`)
+            });
         }
     },
 
     VerifyFolderTask: (username, idTask) => {
-        this.verifyMainFolder;
-        if (!fs.existsSync(`${route}/${username}/${idTask}`)) {
-            fs.mkdirSync(`${route}/${username}/${idTask}`);
+        if (!fs.existsSync(`${mainRoute}${username}/${idTask}`)) {
+            fs.mkdirSync(`${mainRoute}${username}/${idTask}`, { recursive: true }, (err) => {
+                if (err) console.log(`No se pudo crear la carpeta ${err}`)
+            });
         }
     },
 }
