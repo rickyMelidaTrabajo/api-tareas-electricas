@@ -1,4 +1,4 @@
-const Technician = require('../models/technician/technician');
+const Technician = require('../models/technician');
 
 const technician = {
     test: (req, res) => {
@@ -6,6 +6,12 @@ const technician = {
             message: 'soy la accion test de mi controlador de los tecnicos',
 
         });
+    },
+
+    addTechnician: (req, res) => {
+      let { username, name, position, turn } = req.body;
+
+      console.log(req);
     },
 
     getWhithUsername: (username) => {
@@ -23,7 +29,7 @@ const technician = {
                 tech
             });
         }).catch(err => {
-            res.status(200).send({
+            res.status(500).send({
                 status: 'Success',
                 message: 'Get technician successfull',
                 err
