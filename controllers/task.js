@@ -70,10 +70,10 @@ let task = {
 
             const routeImage = `${username}/${taskNumber}`;
 
-            //images.moveImageBefore(image_before.path.split('\\')[1], routeImage); //Para window
-            images.moveImageBefore(image_before.path.split('/')[1], routeImage); //Para linux
-            //images.moveImageAfter(image_after.path.split('\\')[1], routeImage); //para window
-            images.moveImageAfter(image_after.path.split('/')[1], routeImage); //para linux
+            images.moveImageBefore(image_before.path.split('\\')[1], routeImage); //Para window
+            //images.moveImageBefore(image_before.path.split('/')[1], routeImage); //Para linux
+            images.moveImageAfter(image_after.path.split('\\')[1], routeImage); //para window
+            //images.moveImageAfter(image_after.path.split('/')[1], routeImage); //para linux
 
 
             const imageBefore = `${mainRoute}${routeImage}/before.${extensionImageBefore}`;
@@ -136,6 +136,8 @@ let task = {
     showTaskBy: (req, res) => {
         const searchBy = req.query.type;
         const searchData = req.query.data;
+
+        console.log({searchBy, searchData});
 
         Task.find({ type: 'TIC', })
             .then(res => {
