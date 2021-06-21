@@ -9,7 +9,7 @@ let createToken = (user) => {
         iat: moment().unix(),
     }
 
-    return jwt.sign(payload, process.env.SECRET_TOKEN, { expiresIn: '30m' });
+    return jwt.sign(payload, process.env.SECRET_TOKEN, { expiresIn: '5h' });
 };
 
 let decodeToken = (token) => {
