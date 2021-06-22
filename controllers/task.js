@@ -16,6 +16,7 @@ let task = {
             turn
         } = req.body;
 
+        console.log(username);
         Task.countDocuments().then(count => {
             taskNumber = count + 1;
 
@@ -27,14 +28,14 @@ let task = {
                     description,
                     date_generation,
                     turn,
-                    technician: tech.name,
+                    name: tech.name,
                     position: tech.position
                 });
 
                 newPendingTask.save((err, doc) => {
                     if (err) return res.status(500).send({ message: 'Error al guardar tarea pendiente' })
 
-                    return res.status(200).send({ message: `Se guardo correctamente la tarea # ${taskNumber}` });
+                    return res.status(200).send({ message: `Se guardo correctamente la tarea # ${taskNumber}`, taskNumber });
                 });
 
 
@@ -56,12 +57,13 @@ let task = {
         const { type, description, start_time, end_time, hour_man, } = req.body;
         const { image_before, image_after } = req.files;
 
-        const extensionImageBefore = image_before.name.split('.')[1];
-        const extensionImageAfter = image_after.name.split('.')[1];
+        console.log(req.body);
+        //const extensionImageBefore = image_before.name.split('.')[1];
+        //const extensionImageAfter = image_after.name.split('.')[1];
 
         let taskNumber;
 
-        Task.countDocuments().then(count => {
+        /*Task.countDocuments().then(count => {
             taskNumber = count + 1;
 
             const mainRoute = 'task-images/';
@@ -70,10 +72,10 @@ let task = {
 
             const routeImage = `${username}/${taskNumber}`;
 
-            //images.moveImageBefore(image_before.path.split('\\')[1], routeImage); //Para window
-            images.moveImageBefore(image_before.path.split('/')[1], routeImage); //Para linux
-            //images.moveImageAfter(image_after.path.split('\\')[1], routeImage); //para window
-            images.moveImageAfter(image_after.path.split('/')[1], routeImage); //para linux
+            images.moveImageBefore(image_before.path.split('\\')[1], routeImage); //Para window
+            //images.moveImageBefore(image_before.path.split('/')[1], routeImage); //Para linux
+            images.moveImageAfter(image_after.path.split('\\')[1], routeImage); //para window
+            //images.moveImageAfter(image_after.path.split('/')[1], routeImage); //para linux
 
 
             const imageBefore = `${mainRoute}${routeImage}/before.${extensionImageBefore}`;
@@ -110,7 +112,7 @@ let task = {
             })
         }).catch(err => {
             if (err) return res.status(500).send({ message: `Error al obtener la cantidad de tareas finalizadas ${err}` });
-        })
+        })*/
 
     },
 
