@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
 let taskSchema = schema({
+  _id: {type: mongoose.Schema.Types.ObjectId},
   taskNumber: { type: Number, require: true },
   type: { type: String, require: true },
   state: { type: String, require: true },

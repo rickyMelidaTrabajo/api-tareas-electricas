@@ -3,6 +3,9 @@ const technician = require('./technician');
 const Task = require('../models/task');
 const images = require('./foldersAndImages/images');
 const folderImages = require('./foldersAndImages/folder');
+const mongoose = require('mongoose');
+const path = require('path');
+
 
 let task = {
     addPendingTask: (req, res) => {
@@ -49,33 +52,40 @@ let task = {
 
     },
 
+    getImage: (req, res) => {
+      const _id = req.params.id;
+      const mainRoute = path.join(__dirname, '../task-images/');
+      res.sendFile(`${mainRoute}/${_id}/before.png`);
+    },
+
     addFinishedTask: (req, res) => {
+        const _id = new mongoose.Types.ObjectId()
         const username = req.user;
         const state = "Finalizado";
         const date_closing = moment().format('YYYY-MM-DD');
         const date_generation = moment().format('YYYY-MM-DD');
         const { type, description, start_time, end_time, hour_man } = req.body || JSON.parse(req.body.data);
         const { image_before, image_after } = req.files;
-
-        //console.log(JSON.parse(req.body.data));
         const extensionImageBefore = image_before.name.split('.')[1];
         const extensionImageAfter = image_after.name.split('.')[1];
 
         let taskNumber;
 
+
         Task.countDocuments().then(count => {
             taskNumber = count + 1;
 
             const mainRoute = 'task-images/';
-            folderImages.verifyFolderUser(username);
-            folderImages.VerifyFolderTask(username, String(taskNumber));
+            folderImages.verifyFolder(_id);
+            //folderImages.VerifyFolderTask(username, String(taskNumber));
 
-            const routeImage = `${username}/${taskNumber}`;
+            //const routeImage = `${username}/${taskNumber}`;
+            const routeImage = `${_id}`
 
-            images.moveImageBefore(image_before.path.split('\\')[1], routeImage); //Para window
-            //images.moveImageBefore(image_before.path.split('/')[1], routeImage); //Para linux
-            images.moveImageAfter(image_after.path.split('\\')[1], routeImage); //para window
-            //images.moveImageAfter(image_after.path.split('/')[1], routeImage); //para linux
+            //images.moveImageBefore(image_before.path.split('\\')[1], routeImage); //Para window
+            images.moveImageBefore(image_before.path.split('/')[1], routeImage); //Para linux
+            //images.moveImageAfter(image_after.path.split('\\')[1], routeImage); //para window
+            images.moveImageAfter(image_after.path.split('/')[1], routeImage); //para linux
 
 
             const imageBefore = `${mainRoute}${routeImage}/before.${extensionImageBefore}`;
@@ -85,6 +95,7 @@ let task = {
                 let { name, position, turn } = tech;
 
                 let newFinishedTask = new Task({
+                    _id,
                     taskNumber,
                     type,
                     state,
@@ -102,9 +113,11 @@ let task = {
                 });
 
                 newFinishedTask.save((err, data) => {
+                    console.log(err);
                     if (err) return res.status(500).send({ message: 'Error al guardar datos en BD' });
 
-                    return res.status(202).send({ message: 'Tarea Guardada' });
+
+                    return res.status(202).send({ message: 'Tarea Guardada', data });
                 });
 
             }).catch(err => {
@@ -113,6 +126,11 @@ let task = {
         }).catch(err => {
             if (err) return res.status(500).send({ message: `Error al obtener la cantidad de tareas finalizadas ${err}` });
         });
+
+
+
+
+
 
     },
 

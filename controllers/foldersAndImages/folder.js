@@ -4,9 +4,9 @@ const mainRoute = path.join(__dirname, '../../task-images/');
 
 const folder = {
 
-    verifyFolderUser: (username) => {
-        if (!fs.existsSync(`${mainRoute}${username}`)) {
-            fs.mkdirSync(`${mainRoute}${username}/`, { recursive: true }, (err) => {
+    verifyFolder: (_id) => {
+        if (!fs.existsSync(`${mainRoute}${_id}`)) {
+            fs.mkdirSync(`${mainRoute}${_id}/`, { recursive: true }, (err) => {
                 if (err) console.log(`No se pudo crear la carpeta ${err}`)
             });
         }
