@@ -54,16 +54,16 @@ let task = {
         const state = "Finalizado";
         const date_closing = moment().format('YYYY-MM-DD');
         const date_generation = moment().format('YYYY-MM-DD');
-        const { type, description, start_time, end_time, hour_man, } = req.body;
+        const { type, description, start_time, end_time, hour_man } = req.body || JSON.parse(req.body.data);
         const { image_before, image_after } = req.files;
 
-        console.log(req.body);
-        //const extensionImageBefore = image_before.name.split('.')[1];
-        //const extensionImageAfter = image_after.name.split('.')[1];
+        //console.log(JSON.parse(req.body.data));
+        const extensionImageBefore = image_before.name.split('.')[1];
+        const extensionImageAfter = image_after.name.split('.')[1];
 
         let taskNumber;
 
-        /*Task.countDocuments().then(count => {
+        Task.countDocuments().then(count => {
             taskNumber = count + 1;
 
             const mainRoute = 'task-images/';
@@ -112,16 +112,25 @@ let task = {
             })
         }).catch(err => {
             if (err) return res.status(500).send({ message: `Error al obtener la cantidad de tareas finalizadas ${err}` });
-        })*/
+        });
 
+    },
+
+    showTasks: (req,res) => {
+      Task.find({}, (err, tasks) => {
+        if (err) return res.status(500).send({ message: 'Error a ver tareas pendientes' });
+        if (!tasks) return res.status(204).send({ message: 'No hay ninguna tarea' });
+
+        return res.status(200).send({ tasks });
+      })
     },
 
     showPendingTasks: (req, res) => {
         Task.find({ state: 'Pendiente' }, (err, tasks) => {
             if (err) return res.status(500).send({ message: 'Error a ver tareas pendientes' });
-            if (!tasks) return res.status(204).send({ message: 'No hay tareas pendientes' })
+            if (!tasks) return res.status(204).send({ message: 'No hay tareas pendientes' });
 
-            return res.status(200).send({ tasks })
+            return res.status(200).send({ tasks });
         })
     },
 

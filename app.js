@@ -7,6 +7,7 @@ const cors = require('cors');
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static('task-images'));
 app.use(bodyParser.json());
 app.use(cors());
 app.use(session({

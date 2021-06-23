@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const mainRoute = path.join(__dirname, '../../../task-images/');
+const mainRoute = path.join(__dirname, '../../task-images/');
 
 const folder = {
 
