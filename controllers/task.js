@@ -5,7 +5,7 @@ const images = require('./foldersAndImages/images');
 const folderImages = require('./foldersAndImages/folder');
 const mongoose = require('mongoose');
 const path = require('path');
-
+const fs = require('fs');
 
 let task = {
     addPendingTask: (req, res) => {
@@ -53,9 +53,12 @@ let task = {
     },
 
     getImage: (req, res) => {
-      const _id = req.params.id;
+      const _id = req.params.id || req.query.id;
       const mainRoute = path.join(__dirname, '../task-images/');
-      res.sendFile(`${mainRoute}/${_id}/before.png`);
+      let images = fs.readdirSync(`${mainRoute}/${_id}`);
+      let afterExtension = images[0].split('.')[1];
+      
+      res.sendFile(`${mainRoute}/${_id}/after.${afterExtension}`);
     },
 
     addFinishedTask: (req, res) => {
@@ -82,10 +85,10 @@ let task = {
             //const routeImage = `${username}/${taskNumber}`;
             const routeImage = `${_id}`
 
-            //images.moveImageBefore(image_before.path.split('\\')[1], routeImage); //Para window
-            images.moveImageBefore(image_before.path.split('/')[1], routeImage); //Para linux
-            //images.moveImageAfter(image_after.path.split('\\')[1], routeImage); //para window
-            images.moveImageAfter(image_after.path.split('/')[1], routeImage); //para linux
+            images.moveImageBefore(image_before.path.split('\\')[1], routeImage); //Para window
+            //images.moveImageBefore(image_before.path.split('/')[1], routeImage); //Para linux
+            images.moveImageAfter(image_after.path.split('\\')[1], routeImage); //para window
+            //images.moveImageAfter(image_after.path.split('/')[1], routeImage); //para linux
 
 
             const imageBefore = `${mainRoute}${routeImage}/before.${extensionImageBefore}`;
