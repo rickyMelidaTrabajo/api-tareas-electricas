@@ -54,11 +54,15 @@ let task = {
 
     getImage: (req, res) => {
       const _id = req.params.id || req.query.id;
+      const typeImage = req.params.image || req.query.image;
+
       const mainRoute = path.join(__dirname, '../task-images/');
       let images = fs.readdirSync(`${mainRoute}/${_id}`);
       let afterExtension = images[0].split('.')[1];
-      
-      res.sendFile(`${mainRoute}/${_id}/after.${afterExtension}`);
+
+      const url = `${mainRoute}/${_id}/${typeImage}.${afterExtension}`;
+
+      res.sendFile(url);
     },
 
     addFinishedTask: (req, res) => {
@@ -85,10 +89,10 @@ let task = {
             //const routeImage = `${username}/${taskNumber}`;
             const routeImage = `${_id}`
 
-            images.moveImageBefore(image_before.path.split('\\')[1], routeImage); //Para window
-            //images.moveImageBefore(image_before.path.split('/')[1], routeImage); //Para linux
-            images.moveImageAfter(image_after.path.split('\\')[1], routeImage); //para window
-            //images.moveImageAfter(image_after.path.split('/')[1], routeImage); //para linux
+            //images.moveImageBefore(image_before.path.split('\\')[1], routeImage); //Para window
+            images.moveImageBefore(image_before.path.split('/')[1], routeImage); //Para linux
+            //images.moveImageAfter(image_after.path.split('\\')[1], routeImage); //para window
+            images.moveImageAfter(image_after.path.split('/')[1], routeImage); //para linux
 
 
             const imageBefore = `${mainRoute}${routeImage}/before.${extensionImageBefore}`;

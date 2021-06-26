@@ -13,6 +13,6 @@ router.get('/get-pending-tasks', auth, taskController.showPendingTasks);
 router.get('/get-finished-tasks', auth, taskController.showFinishedTasks);
 router.get('/get-task-by/:type?/:data?', taskController.showTaskBy);
 
-router.get('/image-task/:id', auth, taskController.getImage);
+router.get('/image-task/:image?/:id?', taskController.getImage);
 
 module.exports = router;
