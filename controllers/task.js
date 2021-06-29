@@ -9,6 +9,7 @@ const fs = require('fs');
 
 let task = {
     addPendingTask: (req, res) => {
+        const _id = new mongoose.Types.ObjectId()
         const username = req.user;
         const date_generation = moment().format('YYYY-MM-DD');
         let taskNumber;
@@ -19,12 +20,12 @@ let task = {
             turn
         } = req.body;
 
-        console.log(username);
         Task.countDocuments().then(count => {
             taskNumber = count + 1;
 
             technician.getWhithUsername(username).then(tech => {
                 let newPendingTask = new Task({
+                    _id,
                     taskNumber,
                     type,
                     state,
@@ -36,7 +37,7 @@ let task = {
                 });
 
                 newPendingTask.save((err, doc) => {
-                    if (err) return res.status(500).send({ message: 'Error al guardar tarea pendiente' })
+                    if (err) return res.status(500).send({ message: `Error al guardar tarea pendiente ${err}` })
 
                     return res.status(200).send({ message: `Se guardo correctamente la tarea # ${taskNumber}`, taskNumber });
                 });
@@ -78,13 +79,12 @@ let task = {
         const state = "Finalizado";
         const date_closing = moment().format('YYYY-MM-DD');
         const date_generation = moment().format('YYYY-MM-DD');
-        const { type, description, start_time, end_time, hour_man } = req.body || JSON.parse(req.body.data);
+        const { type, description, start_time, end_time, hour_man, turn } = JSON.parse(req.body.data);
         const { image_before, image_after } = req.files;
         const extensionImageBefore = image_before.name.split('.')[1];
         const extensionImageAfter = image_after.name.split('.')[1];
 
         let taskNumber;
-
 
         Task.countDocuments().then(count => {
             const mainRoute = 'task-images/';
@@ -124,7 +124,7 @@ let task = {
                 newFinishedTask.save((err, data) => {
                     if (err) return res.status(500).send({ message: 'Error al guardar datos en BD' });
 
-                    return res.status(202).send({ message: 'Tarea Guardada', data });
+                    return res.status(202).send({ message: `Tarea Guardada # ${taskNumber}`, data });
                 });
 
             }).catch(err => {
