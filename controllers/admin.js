@@ -23,5 +23,18 @@ const signIn = (req, res) => {
   })
 }
 
+const verifyToken = (req, res) => {
+  const token = req.query.token;
 
-module.exports = { signIn };
+  service.decodeToken(token)
+    .then(data => {
+      res.status(200).send({ message: 'success', data });
+    })
+    .catch(error => {
+      res.status(404).send({ message: 'Token no valido.' })
+    })
+
+}
+
+
+module.exports = { signIn, verifyToken };

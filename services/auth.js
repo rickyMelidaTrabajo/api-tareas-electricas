@@ -6,6 +6,7 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 let createToken = (user) => {
     const payload = {
         username: user.username,
+        rol: user.rol,
         iat: moment().unix(),
     }
 
@@ -21,7 +22,7 @@ let decodeToken = (token) => {
                 reject({ status: 401, message: 'El token ha expirado' });
             }
 
-            resolve(payload.username);
+            resolve(payload);
 
         } catch (err) {
             reject({ status: 500, message: 'Token invalido' });
