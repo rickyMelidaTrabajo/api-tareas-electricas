@@ -17,7 +17,8 @@ let signIn = (req, res) => {
             return res.status(200).send({
                 message: 'Te has logueado correctamente',
                 token: service.createToken(userRes),
-                user: userRes.username
+                user: userRes.username,
+                rol: userRes.rol
             });
         })
     });

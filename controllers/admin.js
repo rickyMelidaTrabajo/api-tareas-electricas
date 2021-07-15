@@ -25,7 +25,7 @@ const signIn = (req, res) => {
 
 const verifyToken = (req, res) => {
   const token = req.query.token;
-
+  console.log(token);
   service.decodeToken(token)
     .then(data => {
       res.status(200).send({ message: 'success', data });
