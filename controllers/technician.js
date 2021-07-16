@@ -14,6 +14,16 @@ const technician = {
         console.log(req);
     },
 
+    getTechs: (req, res) => {
+        Technician.find({}).exec()
+            .then(techs => {
+                res.status(200).send({ message: 'success', techs })
+            })
+            .catch(err => {
+                res.status(500).send({ message: 'Error al obtener tecnicos' })
+            })
+    },
+
     getWhithUsername: (username) => {
         let query = Technician.findOne({ username: username });
         return query.exec();
