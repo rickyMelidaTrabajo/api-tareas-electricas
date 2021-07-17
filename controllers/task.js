@@ -6,11 +6,13 @@ const folderImages = require('./foldersAndImages/folder');
 const mongoose = require('mongoose');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
+
 
 let task = {
     addPendingTask: (req, res) => {
         const _id = new mongoose.Types.ObjectId()
-        const username = req.user;
+        const username = req.user.username;
         const date_generation = moment().format('YYYY-MM-DD');
         let taskNumber;
         const {
@@ -75,7 +77,7 @@ let task = {
 
     addFinishedTask: (req, res) => {
         const _id = new mongoose.Types.ObjectId()
-        const username = req.user;
+        const username = req.user.username;
         const state = "Finalizado";
         const date_closing = moment().format('YYYY-MM-DD');
         const date_generation = moment().format('YYYY-MM-DD');
@@ -93,10 +95,13 @@ let task = {
             taskNumber = count + 1;
             folderImages.verifyFolder(_id);
 
-            images.moveImageBefore(image_before.path.split('\\')[1], routeImage); //Para window
-            //images.moveImageBefore(image_before.path.split('/')[1], routeImage); //Para linux
-            images.moveImageAfter(image_after.path.split('\\')[1], routeImage); //para window
-            //images.moveImageAfter(image_after.path.split('/')[1], routeImage); //para linux
+            if(os.platform == 'linux') {
+              images.moveImageBefore(image_before.path.split('/')[1], routeImage); //Para linux
+              images.moveImageAfter(image_after.path.split('/')[1], routeImage); //para linux
+            }else {
+              mages.moveImageBefore(image_before.path.split('\\')[1], routeImage); //Para window
+              images.moveImageAfter(image_after.path.split('\\')[1], routeImage); //para window
+            }
 
             const imageBefore = task.setImage(_id, 'before');
             const imageAfter = task.setImage(_id, 'after');
