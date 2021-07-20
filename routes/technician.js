@@ -8,5 +8,6 @@ router.post('/test', technicianController.test);
 router.get('/get-one', technicianController.getOne);
 router.post('/add-technician', technicianController.addTechnician);
 router.get('/get-technicians', auth, technicianController.getTechs);
+router.get('/get-hours/:username?', auth, technicianController.getHours);
 
 module.exports = router;

@@ -99,7 +99,7 @@ let task = {
               images.moveImageBefore(image_before.path.split('/')[1], routeImage); //Para linux
               images.moveImageAfter(image_after.path.split('/')[1], routeImage); //para linux
             }else {
-              mages.moveImageBefore(image_before.path.split('\\')[1], routeImage); //Para window
+              images.moveImageBefore(image_before.path.split('\\')[1], routeImage); //Para window
               images.moveImageAfter(image_after.path.split('\\')[1], routeImage); //para window
             }
 
@@ -137,7 +137,7 @@ let task = {
             })
         }).catch(err => {
           console.log(err);
-            if (err) return res.status(500).send({ message: `Error al obtener la cantidad de tareas finalizadas ${err}`});
+            if (err) return res.status(500).send({ message: `Error al obtener la cantidad de tareas finalizadas`, err});
         });
 
     },
