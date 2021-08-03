@@ -4,10 +4,8 @@ const auth = require('../middlewares/auth');
 
 const router = express.Router();
 
-router.post('/test', technicianController.test);
-router.get('/get-one', technicianController.getOne);
-router.post('/add-technician', technicianController.addTechnician);
-router.get('/get-technicians', auth, technicianController.getTechs);
-router.get('/get-hours/:username?', auth, technicianController.getHours);
+router.get('/get-technician', technicianController.getTechnician);
+router.post('/set-technician', technicianController.setTechnician);
+router.get('/get-technicians', auth, technicianController.getTechnicians);
 
 module.exports = router;

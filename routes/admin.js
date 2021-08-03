@@ -1,8 +1,11 @@
 const express = require('express');
-const auth = require('../controllers/admin');
+const admin = require('../controllers/admin');
 const router = express.Router();
 
-router.post('/signin', auth.signIn);
-router.get('/verify-token', auth.verifyToken);
+
+router.post('/signin', admin.signIn);
+router.get('/verify-token', admin.verifyToken);
+router.get('/get-hours/:username?', admin.getHours);
+
 
 module.exports = router;

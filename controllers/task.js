@@ -9,8 +9,8 @@ const fs = require('fs');
 const os = require('os');
 
 
-let task = {
-    addPendingTask: (req, res) => {
+const task = {
+    setPendingTask: (req, res) => {
         const _id = new mongoose.Types.ObjectId()
         const username = req.user.username;
         const date_generation = moment().format('YYYY-MM-DD');
@@ -56,26 +56,26 @@ let task = {
     },
 
     getImage: (req, res) => {
-      const _id = req.params.id || req.query.id;
-      const typeImage = req.params.image || req.query.image;
+        const _id = req.params.id || req.query.id;
+        const typeImage = req.params.image || req.query.image;
 
-      const mainRoute = path.join(__dirname, '../task-images/');
-      let images = fs.readdirSync(`${mainRoute}/${_id}`);
-      let extension = typeImage == 'after' ? images[0].split('.')[1] : images[1].split('.')[1];
+        const mainRoute = path.join(__dirname, '../task-images/');
+        let images = fs.readdirSync(`${mainRoute}/${_id}`);
+        let extension = typeImage == 'after' ? images[0].split('.')[1] : images[1].split('.')[1];
 
-      const url = `${mainRoute}/${_id}/${typeImage}.${extension}`;
+        const url = `${mainRoute}/${_id}/${typeImage}.${extension}`;
 
-      res.sendFile(url);
+        res.sendFile(url);
     },
 
     setImage: (id, image) => {
-      const mainUrl = 'http://localhost:1900/api/task/image-task';
+        const mainUrl = 'http://localhost:1900/api/task/image-task';
 
-      const url = `${mainUrl}?id=${id}&image=${image}`;
-      return url;
+        const url = `${mainUrl}?id=${id}&image=${image}`;
+        return url;
     },
 
-    addFinishedTask: (req, res) => {
+    setFinishedTask: (req, res) => {
         const _id = new mongoose.Types.ObjectId()
         const username = req.user.username;
         const state = "Finalizado";
@@ -95,12 +95,12 @@ let task = {
             taskNumber = count + 1;
             folderImages.verifyFolder(_id);
 
-            if(os.platform == 'linux') {
-              images.moveImageBefore(image_before.path.split('/')[1], routeImage); //Para linux
-              images.moveImageAfter(image_after.path.split('/')[1], routeImage); //para linux
-            }else {
-              images.moveImageBefore(image_before.path.split('\\')[1], routeImage); //Para window
-              images.moveImageAfter(image_after.path.split('\\')[1], routeImage); //para window
+            if (os.platform == 'linux') {
+                images.moveImageBefore(image_before.path.split('/')[1], routeImage); //Para linux
+                images.moveImageAfter(image_after.path.split('/')[1], routeImage); //para linux
+            } else {
+                images.moveImageBefore(image_before.path.split('\\')[1], routeImage); //Para window
+                images.moveImageAfter(image_after.path.split('\\')[1], routeImage); //para window
             }
 
             const imageBefore = task.setImage(_id, 'before');
@@ -136,22 +136,22 @@ let task = {
                 return res.status(500).send({ message: 'Error al obtener tecnicos' });
             })
         }).catch(err => {
-          console.log(err);
-            if (err) return res.status(500).send({ message: `Error al obtener la cantidad de tareas finalizadas`, err});
+            console.log(err);
+            if (err) return res.status(500).send({ message: `Error al obtener la cantidad de tareas finalizadas`, err });
         });
 
     },
 
-    showTasks: (req,res) => {
-      Task.find({}, (err, tasks) => {
-        if (err) return res.status(500).send({ message: 'Error a ver tareas pendientes' });
-        if (!tasks) return res.status(204).send({ message: 'No hay ninguna tarea' });
+    getTasks: (req, res) => {
+        Task.find({}, (err, tasks) => {
+            if (err) return res.status(500).send({ message: 'Error a ver tareas pendientes' });
+            if (!tasks) return res.status(204).send({ message: 'No hay ninguna tarea' });
 
-        return res.status(200).send({ tasks });
-      })
+            return res.status(200).send({ tasks });
+        })
     },
 
-    showPendingTasks: (req, res) => {
+    getPendingTasks: (req, res) => {
         Task.find({ state: 'Pendiente' }, (err, tasks) => {
             if (err) return res.status(500).send({ message: 'Error a ver tareas pendientes' });
             if (!tasks) return res.status(204).send({ message: 'No hay tareas pendientes' });
@@ -160,7 +160,7 @@ let task = {
         })
     },
 
-    showFinishedTasks: (req, res) => {
+    getFinishedTasks: (req, res) => {
         Task.find({ state: 'Finalizado' }, (err, tasks) => {
             if (err) return res.status(500).send({ message: 'Error a ver tareas finalizadas.' })
             if (!tasks) return res.status(204).send({ message: 'No hay tareas finalizadas' })
@@ -170,11 +170,11 @@ let task = {
         })
     },
 
-    showTaskBy: (req, res) => {
+    getTaskBy: (req, res) => {
         const searchBy = req.query.type;
         const searchData = req.query.data;
 
-        console.log({searchBy, searchData});
+        console.log({ searchBy, searchData });
 
         Task.find({ type: 'TIC', })
             .then(res => {
